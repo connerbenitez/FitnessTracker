@@ -5,10 +5,10 @@ const mysql = require('mysql');
 // local mysql db connection
 const dbConn = mysql.createConnection({
     host: 'localhost',
-    port: 8889,
+    port: 3306,
     user: 'root',
     password: 'root',
-    database: 'database_name'
+    database: 'fitness_tracker'
 });
 
 dbConn.connect(function (err) {
