@@ -5,14 +5,14 @@ const saltRounds = 10;
 
 //User object create
 var User = function (user) {
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
-    this.email = user.email;
-    this.role = user.role;
+    this.userid = user.userid;
+    this.username = user.username;
     this.password = user.password;
+    this.first_name= user.first_name;
+    this.last_name = user.last_name;
+    this.email = user.email;
+    this.start_date = user.start_date;
     this.status = user.status ? user.status : 1;
-    this.created_at = new Date();
-    this.updated_at = new Date();
 };
 User.create = function (user, result) {
 
@@ -20,7 +20,7 @@ User.create = function (user, result) {
     bcrypt.hash(user.password, saltRounds, function(err, hash) {
         // Store hash in your password DB.
         user.password=hash;
-        dbConn.query("INSERT INTO users set ?", user, function (err, res) {
+        dbConn.query("INSERT INTO user set ?", user, function (err, res) {
             if (err) {
                 console.log("errors: ", err);
                 result(err, null);
@@ -37,8 +37,8 @@ User.create = function (user, result) {
 };
 
 User.login = function (email,password, result) {
-    var sql="Select * from users where email = ? ";
-    sql="SELECT * FROM `users` LEFT JOIN employees on users.email=employees.email where users.email = ?"
+    var sql="Select * from user where email = ? ";
+    sql="SELECT * FROM `user`  where user.email = ?"
     dbConn.query(sql, email, function (err, res) {
         if (err) {
             console.log("errors: ", err);
@@ -64,7 +64,7 @@ User.login = function (email,password, result) {
 
 
 User.findByEmail = function (id, result) {
-    dbConn.query("SELECT * FROM users LEFT JOIN employees on users.email=employees.email where users.email= ? ", id, function (err, res) {
+    dbConn.query("SELECT * FROM user where user.email= ? ", id, function (err, res) {
         if (err) {
             console.log("errors: ", err);
             result(err, null);
@@ -77,7 +77,7 @@ User.findByEmail = function (id, result) {
 
 
 User.findById = function (id, result) {
-    dbConn.query("Select * from users where id = ? ", id, function (err, res) {
+    dbConn.query("Select * from user where user_id = ? ", id, function (err, res) {
         if (err) {
             console.log("errors: ", err);
             result(err, null);
@@ -89,7 +89,7 @@ User.findById = function (id, result) {
 };
 
 User.findAll = function (result) {
-    dbConn.query("Select * from users", function (err, res) {
+    dbConn.query("Select * from user", function (err, res) {
         if (err) {
             console.log("errors: ", err);
             result(null, err);
@@ -104,7 +104,7 @@ User.findAll = function (result) {
 
 User.update = function (user, result) {
     console.log(user)
-    dbConn.query("UPDATE users SET firstname=?,lastname=? WHERE email = ?", [user.firstname, user.lastname, user.email], function (err, res) {
+    dbConn.query("UPDATE user SET first_name=?,last_name=? WHERE email = ?", [user.first_name, user.last_name, user.email], function (err, res) {
         if (err) {
             console.log("errors: ", err);
             result(null, err);
@@ -119,7 +119,7 @@ User.updatePwd = function (password, email, result) {
     bcrypt.hash(password, saltRounds, function(err, hash) {
         // Store hash in your password DB.
         
-        dbConn.query("UPDATE users SET password=? WHERE email = ?", [hash,  email], function (err, res) {
+        dbConn.query("UPDATE user SET password=? WHERE email = ?", [hash,  email], function (err, res) {
             if (err) {
                 console.log("errors: ", err);
                 result(null, err);
@@ -134,7 +134,7 @@ User.updatePwd = function (password, email, result) {
 };
 
 User.delete = function (email, result) {
-    dbConn.query("DELETE FROM users WHERE email = ?", [email], function (err, res) {
+    dbConn.query("DELETE FROM user WHERE email = ?", [email], function (err, res) {
         if (err) {
             console.log("errors: ", err);
             result(null, err);
