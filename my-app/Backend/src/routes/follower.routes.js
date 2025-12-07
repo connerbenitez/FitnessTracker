@@ -14,7 +14,7 @@ router.get('/following/:userId', followerController.findFollowing);
 // Delete a follower relationship
 router.delete('/delete', followerController.delete);
 
-// Optional: get all follower relationships
+
 router.get('/', followerController.findAll);
 
 module.exports = router;

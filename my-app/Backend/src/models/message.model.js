@@ -5,7 +5,7 @@ class Message {
     constructor(message) {
         this.message_id = message.message_id;
         this.sender = message.sender;
-        this.recipient = message.recipient;
+        this.recipient = message.recipient; //These are IDs referencing users
         this.message = message.message;
     }
 

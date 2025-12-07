@@ -9,7 +9,7 @@ router.post("/", exerciseGoalController.create);
 // GET ALL
 router.get("/", exerciseGoalController.findAll);
 
-// GET BY USER (must be above :id)
+
 router.get("/user/:user_id", exerciseGoalController.findByUserId);
 
 // GET BY ID

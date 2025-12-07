@@ -17,7 +17,7 @@ router.get('/sender/:sender', messageController.findBySender);
 // Get messages received by a user
 router.get('/recipient/:recipient', messageController.findByRecipient);
 
-// Get a message by ID (must be after all static routes)
+// Get a message by ID 
 router.get('/:id', messageController.findById);
 
 // Update a message by ID

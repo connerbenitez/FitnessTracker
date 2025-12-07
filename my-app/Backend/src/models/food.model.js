@@ -6,7 +6,7 @@ class Food {
         this.food_id = food.food_id;
         this.food_name = food.food_name;
         this.calories = food.calories;
-        // Removed: this.message = message.message;
+        
     }
 
     static create(food, result) {
@@ -59,12 +59,8 @@ class Food {
         );
     }
 
-    static delete(food_id, result) {
-        dbConn.query("DELETE FROM food WHERE food_id = ?", [food_id], (err, res) => {
-            if (err) return result(err, null);
-            result(null, res);
-        });
-    }
+    
+    
 }
 
 module.exports = Food;
