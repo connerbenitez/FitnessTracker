@@ -4,13 +4,25 @@
  */
 package com.mycompany.fitnesstracker;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import java.awt.CardLayout;
+import javax.swing.SwingUtilities;
+
+import javax.swing.table.DefaultTableModel;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 /**
  *
  * @author ashle
  */
 public class MainScreen extends javax.swing.JFrame {
+    
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainScreen.class.getName());
 
@@ -51,6 +63,12 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         logoutButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        usersDisplay = new javax.swing.JTextArea();
+        getUserButton = new javax.swing.JButton();
+        getUserButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        userTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,11 +188,35 @@ public class MainScreen extends javax.swing.JFrame {
 
         jLabel5.setText("Find Friends");
 
-        jTextField1.setText("Enter friend username");
+        jTextField1.setText("Enter a username");
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
         logoutButton.setText("Logout");
         logoutButton.addActionListener(this::logoutButtonActionPerformed);
+
+        usersDisplay.setColumns(20);
+        usersDisplay.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        usersDisplay.setRows(5);
+        jScrollPane1.setViewportView(usersDisplay);
+
+        getUserButton.setText("Get all users");
+        getUserButton.addActionListener(this::getUserButtonActionPerformed);
+
+        getUserButton2.setText("Get all users");
+        getUserButton2.addActionListener(this::getUserButton2ActionPerformed);
+
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(userTable);
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
@@ -184,43 +226,70 @@ public class MainScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(119, 119, 119))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, MainPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(getUserButton))
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(logoutButton)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(78, 78, 78))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, MainPanelLayout.createSequentialGroup()
-                                        .addGap(68, 68, 68)
-                                        .addComponent(jLabel5))))
-                            .addGroup(MainPanelLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel2)))
-                        .addGap(119, 119, 119))
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addComponent(logoutButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(getUserButton2))
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(21, 21, 21))))
+            .addGroup(MainPanelLayout.createSequentialGroup()
+                .addGap(318, 318, 318)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(96, 96, 96))
             .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(MainPanelLayout.createSequentialGroup()
                     .addGap(30, 30, 30)
                     .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel3)
                         .addComponent(jLabel1))
-                    .addContainerGap(418, Short.MAX_VALUE)))
+                    .addContainerGap(507, Short.MAX_VALUE)))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+            .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addGap(64, 64, 64)
+                .addComponent(jLabel5)
+                .addGap(9, 9, 9)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(getUserButton)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(getUserButton2)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(63, 63, 63)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(63, 63, 63))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)))
                 .addComponent(logoutButton)
                 .addGap(14, 14, 14))
             .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +298,7 @@ public class MainScreen extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addGap(142, 142, 142)
                     .addComponent(jLabel3)
-                    .addContainerGap(147, Short.MAX_VALUE)))
+                    .addContainerGap(408, Short.MAX_VALUE)))
         );
 
         jPanel1.add(MainPanel, "card4");
@@ -255,7 +324,7 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -290,6 +359,72 @@ public class MainScreen extends javax.swing.JFrame {
         card.show(jPanel1, "card4"); // MainPanel
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
+    private void getUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButtonActionPerformed
+        try {
+        // 1. Call the API class
+        APIclient api = new APIclient();
+        String result = api.getUsers();
+
+        // 2. Convert to Pretty JSON
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement jsonElement = JsonParser.parseString(result);
+        String prettyResult = gson.toJson(jsonElement);
+        
+        // 3. Display the result
+        usersDisplay.setText(prettyResult);
+
+    } catch (Exception e) {
+        usersDisplay.setText("Failed: " + e.getMessage());
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_getUserButtonActionPerformed
+
+    private void getUserButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButton2ActionPerformed
+        try {
+        // 1. Fetch the data (App will freeze briefly)
+        APIclient api = new APIclient();
+        String jsonResponse = api.getUsers();
+
+        // 2. Define the Columns you want to see
+        // (We purposely leave out "Password" because it's sensitive!)
+        String[] columnNames = {"ID", "Username", "First Name", "Last Name", "Email", "Start Date"};
+        
+        // 3. Create a Table Model with zero rows initially
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
+        // 4. Parse the JSON Tree
+        // First, get the root object {"errors":..., "data":...}
+        JsonObject root = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        
+        // Next, grab the "data" array
+        JsonArray dataList = root.getAsJsonArray("data");
+
+        // 5. Loop through the array and add rows
+        for (JsonElement element : dataList) {
+            JsonObject user = element.getAsJsonObject();
+
+            // Create a row object matching the order of your 'columnNames'
+            Object[] row = {
+                user.get("user_id").getAsInt(),
+                user.get("username").getAsString(),
+                user.get("first_name").getAsString(),
+                user.get("last_name").getAsString(),
+                user.get("email").getAsString(),
+                user.get("start_date").getAsString()
+            };
+
+            model.addRow(row);
+        }
+
+        // 6. Apply the model to your JTable
+        userTable.setModel(model);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_getUserButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -320,6 +455,8 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel SignupPanel;
     private javax.swing.JButton createAccountButton;
+    private javax.swing.JButton getUserButton;
+    private javax.swing.JButton getUserButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -330,6 +467,8 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -337,5 +476,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JButton loginButton;
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton signupButton;
+    private javax.swing.JTable userTable;
+    private javax.swing.JTextArea usersDisplay;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,61 +1,48 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
-const cors = require ("cors")
-const cookieParser = require("cookie-parser")
-
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-
-// create express app
 const app = express();
-
-// Setup server port
 const port = process.env.PORT || 4001;
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// parse requests of content-type - application/json
-app.use(bodyParser.json())
-
-// Apply CORS middleware 
-app.use(
-  cors({
-      origin: ["http://localhost:3000","http://localhost:3001"],
-      method: ["GET", "POST"],
-      credentials : true,
-  })
-);
-
-
-// Serve files from a directory (e.g., 'public')
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors({
+    origin: ["http://localhost:3000","http://localhost:3001"],
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true,
+}));
 app.use(express.static('public'));
 
-
-// define a root route
+// Root route
 app.get('/', (req, res) => {
   res.send("Hello World");
 });
 
+// Routes
+const userRoutes = require('./src/routes/user.routes');
+const messageRoutes = require('./src/routes/message.routes');
+const foodRoutes = require('./src/routes/food.routes');
+const followerRoutes = require('./src/routes/follower.routes');
+const exerciseGoalRoutes = require('./src/routes/exercisegoal.routes');
 
-// Require [user] routes
-const userRoutes = require('./src/routes/user.routes')
+app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/foods', foodRoutes);
+app.use('/api/followers', followerRoutes);
+app.use('/api/exercise-goals', exerciseGoalRoutes);
 
-app.use(cookieParser());
+// Cache control
+app.use((req,res,next)=>{
+  res.set('Cache-Control','no-store');
+  next();
+});
 
-// using as middleware
-app.use('/api/users', userRoutes)
-
-// listen for requests
+// Start server
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);  
 });
-
-
-app.use((req,res,next)=>{
-  res.set('Cache-Control','no-store')
-  next()
-})
-
-
