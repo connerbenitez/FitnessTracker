@@ -28,11 +28,13 @@ const userRoutes = require('./src/routes/user.routes');
 const messageRoutes = require('./src/routes/message.routes');
 const foodRoutes = require('./src/routes/food.routes');
 const followerRoutes = require('./src/routes/follower.routes');
+const exerciseGoalRoutes = require('./src/routes/exercisegoal.routes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/followers', followerRoutes);
+app.use('/api/exercise-goals', exerciseGoalRoutes);
 
 // Cache control
 app.use((req,res,next)=>{
