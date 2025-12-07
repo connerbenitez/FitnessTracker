@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 4001;
-
+ 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,12 +29,17 @@ const messageRoutes = require('./src/routes/message.routes');
 const foodRoutes = require('./src/routes/food.routes');
 const followerRoutes = require('./src/routes/follower.routes');
 const exerciseGoalRoutes = require('./src/routes/exercisegoal.routes');
+const exerciseRoutes = require('./src/routes/exercise.routes');
+const dietGoalRoutes = require('./src/routes/dietgoal.routes');
+
 
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/followers', followerRoutes);
 app.use('/api/exercise-goals', exerciseGoalRoutes);
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api/diet-goals', dietGoalRoutes);
 
 // Cache control
 app.use((req,res,next)=>{
