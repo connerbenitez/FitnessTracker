@@ -1,28 +1,26 @@
-const express = require('express')
-const router = express.Router()
+// src/routes/user.routes.js
+const express = require('express');
+const router = express.Router();
 const userController = require('../controllers/user.controller');
-const {verifyToken} = require("../middlewares/auth");
 
-//get all users  
-router.get('/',verifyToken, userController.findAll);
+// Routes
 
-//fetch all
+// GET all users
+router.get('/', userController.findAll);
+
+// GET user by ID 
 router.get('/:id', userController.findById);
 
-//login  
-router.post("/",userController.login)
+// Create user
+router.post('/create', userController.create);
 
-//login  
-router.post("/create",userController.create)
-
+// Login
+router.post('/login', userController.login);
 
 // Update password
 router.post('/change_password', userController.updatePassword);
 
-
-// Updates the employee
+// Update user profile
 router.put('/update', userController.update);
 
-
-
-module.exports = router
+module.exports = router;
