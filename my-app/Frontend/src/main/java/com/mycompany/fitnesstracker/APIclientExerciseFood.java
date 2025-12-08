@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
  *
  * @author ashle
  */
-public class APIclient {
+public class APIclientExerciseFood {
 //    public static void main(String[] args) {
 //        // 1. Create the Client
 //        HttpClient client = HttpClient.newHttpClient();
@@ -55,4 +55,21 @@ public class APIclient {
         return response.body(); // JSON object
     }
     
+    
+    public String getExerciseByUser(int user_id) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://127.0.0.1:4001/api/exercises/user/" + Integer.toString(user_id)))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed: HTTP error code : " + response.statusCode());
+        }
+
+        return response.body(); // JSON object
+    }
 }
