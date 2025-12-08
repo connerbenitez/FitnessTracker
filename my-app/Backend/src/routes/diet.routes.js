@@ -1,28 +1,31 @@
-const express = require('express')
-const router = express.Router()
+'use strict';
+
+const express = require('express');
+const router = express.Router();
 const dietController = require('../controllers/diet.controller');
-const {verifyToken} = require("../middlewares/auth");
 
-//get all users  
-router.get('/',verifyToken, dietController.findAll);
+// CREATE
+router.post('/', dietController.create);
 
-//fetch all
-router.get('/:id', dietController.findById);
+// GET ALL
+router.get('/', dietController.findAll);
 
-//login  
-router.post("/",dietController.login)
+// GET BY ID
+router.get('/:diet_id', dietController.findById);
 
-//login  
-router.post("/create",dietController.create)
+// GET BY USER
+router.get('/user/:user_id', dietController.findByUserId);
 
+// GET BY FOOD
+router.get('/food/:food_id', dietController.findByFoodId);
 
-// Update password
-router.post('/change_password', dietController.updatePassword);
+// GET BY DATE
+router.get('/date/:date', dietController.findByDate);
 
+// UPDATE
+router.put('/:diet_id', dietController.update);
 
-// Updates the employee
-router.put('/update', dietController.update);
+// DELETE
+router.delete('/:diet_id', dietController.delete);
 
-
-
-module.exports = router
+module.exports = router;
