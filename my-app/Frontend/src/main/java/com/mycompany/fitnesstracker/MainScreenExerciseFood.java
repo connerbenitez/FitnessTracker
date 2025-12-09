@@ -449,7 +449,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         try {
         // 1. Call the API class
         APIclient api = new APIclient();
-        String result = api.getUsers();
+        String result = api.getAllUsers();
 
         // 2. Convert to Pretty JSON
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -469,7 +469,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         try {
         // 1. Fetch the data (App will freeze briefly)
         APIclient api = new APIclient();
-        String jsonResponse = api.getUsers();
+        String jsonResponse = api.getAllUsers();
 
         // 2. Define the Columns you want to see
         // (We purposely leave out "Password" because it's sensitive!)
@@ -514,9 +514,9 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     private void refreshExerciseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshExerciseButtonActionPerformed
         try {
             // 1. Fetch the data
-            APIclientExerciseFood api = new APIclientExerciseFood();
+            APIclient api = new APIclient();
             // Make sure 'currentUserId' is the actual ID variable (e.g., 1)
-            String jsonResponse = api.getExerciseByUser(loggedInUserID); 
+            String jsonResponse = api.getExercisesByUser(loggedInUserID); 
 
             // 2. Define Columns
             String[] columnNames = {"Exercise ID", "Type", "Distance", "Start Time", "End Time", "Date"};
