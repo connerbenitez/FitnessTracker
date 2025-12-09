@@ -31,6 +31,7 @@ const followerRoutes = require('./src/routes/follower.routes');
 const exerciseGoalRoutes = require('./src/routes/exercisegoal.routes');
 const exerciseRoutes = require('./src/routes/exercise.routes');
 const dietGoalRoutes = require('./src/routes/dietgoal.routes');
+const dietRoutes = require('./src/routes/diet.routes');
 
 
 app.use('/api/users', userRoutes);
@@ -40,6 +41,7 @@ app.use('/api/followers', followerRoutes);
 app.use('/api/exercise-goals', exerciseGoalRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/diet-goals', dietGoalRoutes);
+app.use('/api/diets', dietRoutes);
 
 // Cache control
 app.use((req,res,next)=>{
