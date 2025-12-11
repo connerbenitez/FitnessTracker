@@ -16,6 +16,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -24,13 +29,15 @@ import com.google.gson.JsonParser;
 public class MainScreenExerciseFood extends javax.swing.JFrame {
     
     int loggedInUserID;
+    String units = "Miles";
+    Map<String, Integer>foodDictionary = new HashMap();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainScreenExerciseFood.class.getName());
 
     /**
      * Creates new form MainScreen
      */
-    public MainScreenExerciseFood() {        
+    public MainScreenExerciseFood() {
         initComponents();
     }
 
@@ -43,6 +50,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel13 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         LoginPanel = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
@@ -57,8 +65,6 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         jPasswordField2 = new javax.swing.JPasswordField();
         jTextField4 = new javax.swing.JTextField();
         MainPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -70,15 +76,38 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         getUserButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         ExerciseFoodEntry = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        exerciseTable = new javax.swing.JTable();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        dietTable = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         refreshExerciseButton = new javax.swing.JButton();
         refreshDietButton = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        exerciseTable = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        dietTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        ExerciseType = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        AddExerciseButton = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
+        jSpinner2 = new javax.swing.JSpinner();
+        jSpinner3 = new javax.swing.JSpinner();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        foodNameCombo = new javax.swing.JComboBox<>();
+        foodCalories = new javax.swing.JSpinner();
+        jSpinner5 = new javax.swing.JSpinner();
+
+        jLabel13.setText("End Time");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,7 +146,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                             .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)))))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         LoginPanelLayout.setVerticalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,10 +161,10 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(signupButton)
                     .addComponent(loginButton))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
-        jPanel1.add(LoginPanel, "card2");
+        jPanel1.add(LoginPanel, "LoginPanel");
 
         jTextField3.setText("Username");
         jTextField3.addActionListener(this::jTextField3ActionPerformed);
@@ -168,7 +197,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                                 .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField4)))))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         SignupPanelLayout.setVerticalGroup(
             SignupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,14 +212,10 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(createAccountButton)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
-        jPanel1.add(SignupPanel, "card3");
-
-        jLabel1.setText("Track Exercise");
-
-        jLabel2.setText("Track Food");
+        jPanel1.add(SignupPanel, "SignupPanel");
 
         jLabel3.setText("Goals/Charts");
 
@@ -228,102 +253,103 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(userTable);
 
+        jButton1.setText("View Exercises and Food");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(119, 119, 119))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(getUserButton)
-                        .addGap(78, 78, 78))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(96, 96, 96))))
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGap(318, 318, 318)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
+                        .addGap(109, 109, 109)
+                        .addComponent(jLabel3))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(getUserButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel5)
+                            .addGap(18, 18, 18))))
+                .addGap(14, 14, 14))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(MainPanelLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabel4))
-                                    .addGroup(MainPanelLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(logoutButton)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(getUserButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4)
+                            .addComponent(logoutButton))
+                        .addGap(0, 56, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(getUserButton2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                    .addGap(30, 30, 30)
-                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel1))
-                    .addContainerGap(508, Short.MAX_VALUE)))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(64, 64, 64)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel5)
+                .addGap(9, 9, 9)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(getUserButton)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(78, 78, 78)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(getUserButton)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(getUserButton2)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(106, 106, 106)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(logoutButton)))
-                .addContainerGap())
-            .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel1)
-                    .addGap(142, 142, 142)
-                    .addComponent(jLabel3)
-                    .addContainerGap(283, Short.MAX_VALUE)))
+                        .addComponent(logoutButton))
+                    .addComponent(getUserButton2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.add(MainPanel, "card4");
+        jPanel1.add(MainPanel, "MainPanel");
+
+        jLabel8.setText("Your Exercise History");
+
+        jLabel9.setText("Your Diet History");
+
+        refreshExerciseButton.setText("Refresh");
+        refreshExerciseButton.addActionListener(this::refreshExerciseButtonActionPerformed);
+
+        refreshDietButton.setText("Refresh");
+        refreshDietButton.addActionListener(this::refreshDietButtonActionPerformed);
 
         exerciseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
+        exerciseTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane3.setViewportView(exerciseTable);
+
+        jScrollPane6.setViewportView(jScrollPane3);
 
         dietTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -336,57 +362,159 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        dietTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        dietTable.setColumnSelectionAllowed(true);
         jScrollPane4.setViewportView(dietTable);
+        dietTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        jLabel8.setText("Your Exercise History");
+        jScrollPane5.setViewportView(jScrollPane4);
 
-        jLabel9.setText("Your Diet History");
+        jLabel1.setText("Add an Exercise");
 
-        refreshExerciseButton.setText("Refresh");
-        refreshExerciseButton.addActionListener(this::refreshExerciseButtonActionPerformed);
+        ExerciseType.setEditable(true);
+        ExerciseType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Running", "Walking", "Cycling", "Swimming", "Weights" }));
+        ExerciseType.addActionListener(this::ExerciseTypeActionPerformed);
 
-        refreshDietButton.setText("Refresh");
+        jLabel2.setText("Type");
+
+        jLabel10.setText("Distance");
+
+        jLabel11.setText("Start Time");
+
+        jLabel12.setText("End Time");
+
+        AddExerciseButton.setText("Add Exercise");
+        AddExerciseButton.addActionListener(this::AddExerciseButtonActionPerformed);
+
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(200.0f), Float.valueOf(0.1f)));
+
+        jSpinner2.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+
+        jSpinner3.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+
+        jLabel14.setText("Miles");
+
+        jLabel15.setText("Add a Food Item");
+
+        jLabel16.setText("Name");
+
+        jLabel17.setText("Calories");
+
+        jLabel18.setText("Date/Time");
+
+        foodNameCombo.setEditable(true);
+        foodNameCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        foodNameCombo.addActionListener(this::foodNameComboActionPerformed);
+
+        foodCalories.setModel(new javax.swing.SpinnerNumberModel(0, 0, 3000, 10));
+
+        jSpinner5.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
 
         javax.swing.GroupLayout ExerciseFoodEntryLayout = new javax.swing.GroupLayout(ExerciseFoodEntry);
         ExerciseFoodEntry.setLayout(ExerciseFoodEntryLayout);
         ExerciseFoodEntryLayout.setHorizontalGroup(
             ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refreshExerciseButton))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(refreshExerciseButton)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ExerciseFoodEntryLayout.createSequentialGroup()
+                            .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                                    .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(23, 23, 23))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExerciseFoodEntryLayout.createSequentialGroup()
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(25, 25, 25)))
+                            .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                                    .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(ExerciseType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(AddExerciseButton))
+                                .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE)))))
+                    .addComponent(jLabel1))
+                .addGap(29, 29, 29)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refreshDietButton)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshDietButton))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel18))
+                        .addGap(41, 41, 41)
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(foodCalories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(foodNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         ExerciseFoodEntryLayout.setVerticalGroup(
             ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExerciseFoodEntryLayout.createSequentialGroup()
-                .addContainerGap(157, Short.MAX_VALUE)
-                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel8)
-                        .addComponent(refreshExerciseButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(refreshDietButton)
-                        .addComponent(jLabel9)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ExerciseFoodEntryLayout.createSequentialGroup()
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(refreshDietButton)
+                            .addComponent(jLabel8)
+                            .addComponent(refreshExerciseButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ExerciseType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(AddExerciseButton)
+                    .addComponent(jLabel16)
+                    .addComponent(foodNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel17)
+                    .addComponent(foodCalories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        jPanel1.add(ExerciseFoodEntry, "card2");
+        jPanel1.add(ExerciseFoodEntry, "ExerciseFoodEntry");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -400,7 +528,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -418,7 +546,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
         CardLayout card = (CardLayout)jPanel1.getLayout();
-        card.show(jPanel1, "card3"); // SignupPanel
+        card.show(jPanel1, "SignupPanel");
     }//GEN-LAST:event_signupButtonActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -431,18 +559,19 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         CardLayout card = (CardLayout)jPanel1.getLayout();
-        card.show(jPanel1, "card2"); // LoginPanel
+        card.show(jPanel1, "LoginPanel");
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         CardLayout card = (CardLayout)jPanel1.getLayout();
         loggedInUserID = 1;
-        card.show(jPanel1, "card4"); // MainPanel
+        card.show(jPanel1, "MainPanel");
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
         CardLayout card = (CardLayout)jPanel1.getLayout();
-        card.show(jPanel1, "card4"); // MainPanel
+        JOptionPane.showMessageDialog(jPanel1, "Account not created because this isn't implemented yet");
+        card.show(jPanel1, "LoginPanel"); 
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
     private void getUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButtonActionPerformed
@@ -511,6 +640,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         // 1. Fetch the data
         APIclient api = new APIclient();
         String jsonResponse = api.getExercisesByUser(loggedInUserID); 
+        System.out.println("Exercise response:" + jsonResponse);
 
         // 2. Define Columns
         String[] columnNames = {"Exercise ID", "Type", "Distance", "Start Time", "End Time", "Date"};
@@ -539,12 +669,85 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
         // 6. Apply the model
         exerciseTable.setModel(model);
-
+        
     } catch (Exception e) {
         e.printStackTrace();
         javax.swing.JOptionPane.showMessageDialog(null, "Error loading exercises: " + e.getMessage());
     }
     }//GEN-LAST:event_refreshExerciseButtonActionPerformed
+
+    private void refreshDietButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshDietButtonActionPerformed
+    try {
+        // Get the diet entries for the user ID
+        APIclient api = new APIclient();
+        String jsonResponse = api.getDietsByUser(loggedInUserID); 
+        System.out.println("Diet response: " + jsonResponse);
+
+        // Prepare table setup
+        String[] columnNames = {"Food Name", "Calories", "Time", "Date"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+
+        // Parse the jsonResponse
+        JsonArray dataList = JsonParser.parseString(jsonResponse).getAsJsonArray();
+
+        // Display each element in the diet array nicely
+        for (JsonElement element : dataList) {
+            JsonObject diet = element.getAsJsonObject();
+
+            // Get the food name and calories from food ID
+            String food_name = "Unknown";
+            int calories = 0;
+            int foodId = diet.get("food_id").getAsInt();
+            String foodResponse = api.getFoodById(foodId); 
+            JsonObject foodRoot = JsonParser.parseString(foodResponse).getAsJsonObject();
+
+            if (foodRoot.has("data")) {
+                JsonArray foodArray = foodRoot.getAsJsonArray("data");
+                JsonObject food = foodArray.get(0).getAsJsonObject();
+                food_name = food.get("food_name").getAsString();
+                calories = food.get("calories").getAsInt();
+            }
+            
+            // create row
+            Object[] row = {
+                food_name,
+                calories,
+                diet.get("time").getAsString(),
+                diet.get("date").getAsString()
+            };
+            
+            // add row to table model
+            model.addRow(row);
+        }
+        
+        // apply table model
+        dietTable.setModel(model);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_refreshDietButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CardLayout card = (CardLayout)jPanel1.getLayout();
+        card.show(jPanel1, "ExerciseFoodEntry"); 
+        refreshDietButtonActionPerformed(evt);
+        refreshExerciseButtonActionPerformed(evt);
+        getListOfFoodCalories();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void ExerciseTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExerciseTypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ExerciseTypeActionPerformed
+
+    private void AddExerciseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddExerciseButtonActionPerformed
+        
+    }//GEN-LAST:event_AddExerciseButtonActionPerformed
+
+    private void foodNameComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foodNameComboActionPerformed
+        // when a food is selected set the calories from the dictionary into the foodCalories
+    }//GEN-LAST:event_foodNameComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -572,16 +775,30 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddExerciseButton;
     private javax.swing.JPanel ExerciseFoodEntry;
+    private javax.swing.JComboBox<String> ExerciseType;
     private javax.swing.JPanel LoginPanel;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel SignupPanel;
     private javax.swing.JButton createAccountButton;
     private javax.swing.JTable dietTable;
     private javax.swing.JTable exerciseTable;
+    private javax.swing.JSpinner foodCalories;
+    private javax.swing.JComboBox<String> foodNameCombo;
     private javax.swing.JButton getUserButton;
     private javax.swing.JButton getUserButton2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -597,6 +814,12 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
+    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner jSpinner5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -609,4 +832,26 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     private javax.swing.JTable userTable;
     private javax.swing.JTextArea usersDisplay;
     // End of variables declaration//GEN-END:variables
+
+    private void getListOfFoodCalories() {
+        
+        Gson gson = new Gson();
+        
+        try {
+            APIclient api = new APIclient();
+            String jsonResponse = api.getAllFoods(); 
+            JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
+            JsonArray dataArray = jsonObject.getAsJsonArray("data");
+            
+            for (JsonElement element : dataArray) {
+                JsonObject item = element.getAsJsonObject();
+                String foodName = item.get("food_name").getAsString();
+                int calories = item.get("calories").getAsInt();
+                foodDictionary.put(foodName, calories);
+            }
+            System.out.println(foodDictionary);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
