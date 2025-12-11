@@ -467,29 +467,24 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
     private void getUserButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButton2ActionPerformed
         try {
-        // 1. Fetch the data (App will freeze briefly)
+        // 1. Fetch the data
         APIclient api = new APIclient();
         String jsonResponse = api.getAllUsers();
 
-        // 2. Define the Columns you want to see
-        // (We purposely leave out "Password" because it's sensitive!)
+        // 2. Define the Columns
         String[] columnNames = {"ID", "Username", "First Name", "Last Name", "Email", "Start Date"};
         
-        // 3. Create a Table Model with zero rows initially
+        // 3. Create a Table Model
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-        // 4. Parse the JSON Tree
-        // First, get the root object {"errors":..., "data":...}
+        // 4. Parse the JSON Object with "data" array
         JsonObject root = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        
-        // Next, grab the "data" array
         JsonArray dataList = root.getAsJsonArray("data");
 
         // 5. Loop through the array and add rows
         for (JsonElement element : dataList) {
             JsonObject user = element.getAsJsonObject();
 
-            // Create a row object matching the order of your 'columnNames'
             Object[] row = {
                 user.get("user_id").getAsInt(),
                 user.get("username").getAsString(),
@@ -513,47 +508,42 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
     private void refreshExerciseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshExerciseButtonActionPerformed
         try {
-            // 1. Fetch the data
-            APIclient api = new APIclient();
-            // Make sure 'currentUserId' is the actual ID variable (e.g., 1)
-            String jsonResponse = api.getExercisesByUser(loggedInUserID); 
+        // 1. Fetch the data
+        APIclient api = new APIclient();
+        String jsonResponse = api.getExercisesByUser(loggedInUserID); 
 
-            // 2. Define Columns
-            String[] columnNames = {"Exercise ID", "Type", "Distance", "Start Time", "End Time", "Date"};
-            
-            // 3. Create Model
-            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        // 2. Define Columns
+        String[] columnNames = {"Exercise ID", "Type", "Distance", "Start Time", "End Time", "Date"};
+        
+        // 3. Create Model
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
-            // 4. Parse the JSON Tree (UPDATED)
-            // Since the response starts with '[', we parse directly as an Array.
-            // We skip the step of looking for "data" or "root".
-            JsonArray dataList = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        // 4. Parse the JSON Array (direct array response)
+        JsonArray dataList = JsonParser.parseString(jsonResponse).getAsJsonArray();
 
-            // 5. Loop through the array and add rows
-            for (JsonElement element : dataList) {
-                JsonObject exercise = element.getAsJsonObject();
+        // 5. Loop through the array and add rows
+        for (JsonElement element : dataList) {
+            JsonObject exercise = element.getAsJsonObject();
 
-                Object[] row = {
-                    exercise.get("exercise_id").getAsInt(),
-                    // Safety check: if type is null, show "N/A"
-                    exercise.get("type").isJsonNull() ? "N/A" : exercise.get("type").getAsString(),
-                    exercise.get("distance").isJsonNull() ? 0.0 : exercise.get("distance").getAsDouble(),
-                    exercise.get("start_time").isJsonNull() ? "" : exercise.get("start_time").getAsString(),
-                    exercise.get("end_time").isJsonNull() ? "" : exercise.get("end_time").getAsString(),
-                    // This handles the date string provided in your error
-                    exercise.get("date").isJsonNull() ? "" : exercise.get("date").getAsString()
-                };
+            Object[] row = {
+                exercise.get("exercise_id").getAsInt(),
+                exercise.get("type").getAsString(),
+                exercise.get("distance").getAsDouble(),
+                exercise.get("start_time").getAsString(),
+                exercise.get("end_time").getAsString(),
+                exercise.get("date").getAsString()
+            };
 
-                model.addRow(row);
-            }
-
-            // 6. Apply the model
-            exerciseTable.setModel(model);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(null, "Error loading exercises: " + e.getMessage());
+            model.addRow(row);
         }
+
+        // 6. Apply the model
+        exerciseTable.setModel(model);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(null, "Error loading exercises: " + e.getMessage());
+    }
     }//GEN-LAST:event_refreshExerciseButtonActionPerformed
 
     /**

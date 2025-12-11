@@ -451,57 +451,70 @@ public class APIclient {
     }
     
     // ============ DIET ROUTES ============
-    // Note: The first diet route has verifyToken middleware
-    
-    // Get all diets (with token)
-    public String getAllDiets(String token) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/")
-                .GET()
-                .header("Authorization", "Bearer " + token)
-                .build();
-        return executeRequest(request);
-    }
-    
-    // Get diet by ID
-    public String getDietById(int id) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/" + id)
-                .GET()
-                .build();
-        return executeRequest(request);
-    }
-    
-    // Diet login
-    public String dietLogin(String credentialsJson) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/")
-                .POST(HttpRequest.BodyPublishers.ofString(credentialsJson))
-                .header("Content-Type", "application/json")
-                .build();
-        return executeRequest(request);
-    }
-    
+
     // Create diet
     public String createDiet(String dietJson) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/create")
+        HttpRequest request = buildRequest("/api/diets/")
                 .POST(HttpRequest.BodyPublishers.ofString(dietJson))
                 .header("Content-Type", "application/json")
                 .build();
         return executeRequest(request);
     }
-    
-    // Update diet password
-    public String updateDietPassword(String passwordJson) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/change_password")
-                .POST(HttpRequest.BodyPublishers.ofString(passwordJson))
+
+    // Get all diets
+    public String getAllDiets() throws Exception {
+        HttpRequest request = buildRequest("/api/diets/")
+                .GET()
+                .build();
+        return executeRequest(request);
+    }
+
+    // Get diet by ID
+    public String getDietById(int dietId) throws Exception {
+        HttpRequest request = buildRequest("/api/diets/" + dietId)
+                .GET()
+                .build();
+        return executeRequest(request);
+    }
+
+    // Get diets by user ID
+    public String getDietsByUser(int userId) throws Exception {
+        HttpRequest request = buildRequest("/api/diets/user/" + userId)
+                .GET()
+                .build();
+        return executeRequest(request);
+    }
+
+    // Get diets by food ID
+    public String getDietsByFood(int foodId) throws Exception {
+        HttpRequest request = buildRequest("/api/diets/food/" + foodId)
+                .GET()
+                .build();
+        return executeRequest(request);
+    }
+
+    // Get diets by date
+    public String getDietsByDate(String date) throws Exception {
+        String encodedDate = URLEncoder.encode(date, StandardCharsets.UTF_8);
+        HttpRequest request = buildRequest("/api/diets/date/" + encodedDate)
+                .GET()
+                .build();
+        return executeRequest(request);
+    }
+
+    // Update diet
+    public String updateDiet(int dietId, String dietJson) throws Exception {
+        HttpRequest request = buildRequest("/api/diets/" + dietId)
+                .PUT(HttpRequest.BodyPublishers.ofString(dietJson))
                 .header("Content-Type", "application/json")
                 .build();
         return executeRequest(request);
     }
-    
-    // Update diet
-    public String updateDiet(String dietJson) throws Exception {
-        HttpRequest request = buildRequest("/api/diets/update")
-                .PUT(HttpRequest.BodyPublishers.ofString(dietJson))
-                .header("Content-Type", "application/json")
+
+    // Delete diet
+    public String deleteDiet(int dietId) throws Exception {
+        HttpRequest request = buildRequest("/api/diets/" + dietId)
+                .DELETE()
                 .build();
         return executeRequest(request);
     }
