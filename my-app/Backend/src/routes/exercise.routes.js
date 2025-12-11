@@ -21,6 +21,8 @@ router.get("/type/:type", exerciseController.findByType);
 // Get exercises by date
 router.get("/date/:date", exerciseController.findByDate);
 
+router.get("/since/:user_id/:type/:date", exerciseController.findSinceDate);
+
 // UPDATE
 router.put("/:id", exerciseController.update);
 

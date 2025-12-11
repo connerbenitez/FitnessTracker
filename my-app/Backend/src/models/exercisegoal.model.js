@@ -4,7 +4,7 @@ const dbConn = require('../../config/db.config');
 class ExerciseGoal {
     constructor(exercisegoal) {
         this.exercise_goal_id = exercisegoal.exercise_goal_id;
-        this.exercise_id = exercisegoal.exercise_id;
+        
         this.user_id = exercisegoal.user_id;
         this.description = exercisegoal.description;
         this.start_date = exercisegoal.start_date;
@@ -17,7 +17,7 @@ class ExerciseGoal {
     // CREATE
     static create(goal, result) {
         const insertData = {
-            exercise_id: goal.exercise_id,
+            
             user_id: goal.user_id,
             description: goal.description,
             start_date: goal.start_date,

@@ -4,7 +4,6 @@ const dbConn = require('../../config/db.config');
 class DietGoal {
     constructor(dietgoal) {
         this.diet_goal_id = dietgoal.diet_goal_id; // Primary key
-        this.diet_id = dietgoal.diet_id; // Foreign key referencing a diet
         this.user_id = dietgoal.user_id; // Foreign key referencing a user
         this.description = dietgoal.description;
         this.completion = dietgoal.completion; // Boolean
@@ -16,7 +15,6 @@ class DietGoal {
     // CREATE
     static create(dietgoal, result) {
         const insertData = {
-            diet_id: dietgoal.diet_id,
             user_id: dietgoal.user_id,
             description: dietgoal.description,
             completion: dietgoal.completion,
