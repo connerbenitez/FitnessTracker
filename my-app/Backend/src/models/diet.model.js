@@ -5,6 +5,7 @@ class Diet {
     constructor(diet) {
         this.diet_id = diet.diet_id; 
         this.user_id = diet.user_id; 
+        this.diet_goal_id = diet.diet_goal_id;
         this.food_id = diet.food_id; 
         this.time = diet.time; 
         this.date = diet.date; 
@@ -14,6 +15,7 @@ class Diet {
     static create(diet, result) {
         const insertData = {
             user_id: diet.user_id,
+            diet_goal_id: diet.diet_goal_id,
             food_id: diet.food_id,
             time: diet.time,
             date: diet.date
