@@ -18,7 +18,7 @@ class Exercise {
         const insertData = {
             
             user_id: exercise.user_id,
-            exercise_goal_id: exercise.exercise_goal_id,
+            // exercise_goal_id: exercise.exercise_goal_id,
             type: exercise.type,
             distance: exercise.distance,
             start_time: exercise.start_time,
