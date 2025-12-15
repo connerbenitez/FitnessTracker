@@ -4,6 +4,7 @@ const dbConn = require('../../config/db.config');
 class DietGoal {
     constructor(dietgoal) {
         this.diet_goal_id = dietgoal.diet_goal_id; // Primary key
+        //this.diet_id = dietgoal.diet_id; // Foreign key referencing a diet
         this.user_id = dietgoal.user_id; // Foreign key referencing a user
         this.description = dietgoal.description;
         this.completion = dietgoal.completion; // Boolean
@@ -15,6 +16,7 @@ class DietGoal {
     // CREATE
     static create(dietgoal, result) {
         const insertData = {
+            //diet_id: dietgoal.diet_id,
             user_id: dietgoal.user_id,
             description: dietgoal.description,
             completion: dietgoal.completion,
@@ -98,23 +100,39 @@ class DietGoal {
     }
 
     // UPDATE
-    static update(diet_goal_id, dietData, result) {
+        static update(goal_id, goalData, result) {
+            const sql = `
+                UPDATE dietgoal 
+                SET user_id = ?, description = ?, start_date = ?, end_date = ?, 
+                    completion = ?, calorie_goal = ?
+                WHERE diet_goal_id = ?
+            `;
+    
+            const params = [
+                goalData.user_id,
+                goalData.description,
+                goalData.start_date,
+                goalData.end_date,
+                goalData.completion,
+                goalData.calorie_goal,
+                goal_id
+            ];
+    
+            dbConn.query(sql, params, (err, res) => {
+                if (err) return result(err, null);
+                result(null, res);
+            });
+        }
+
+    // UPDATE COMPLETION STATUS
+    static updateCompletion(goal_id, completion, result) {
         const sql = `
             UPDATE dietgoal
-            SET diet_id = ?, user_id = ?, description = ?, completion = ?,
-                start_date = ?, end_date = ?, calorie_goal = ?
+            SET completion = ?
             WHERE diet_goal_id = ?
         `;
-        const params = [
-            dietData.diet_id,
-            dietData.user_id,
-            dietData.description,
-            dietData.completion,
-            dietData.start_date,
-            dietData.end_date,
-            dietData.calorie_goal,
-            diet_goal_id
-        ];
+
+        const params = [completion, goal_id]; // use the parameter 'completion'
 
         dbConn.query(sql, params, (err, res) => {
             if (err) return result(err, null);

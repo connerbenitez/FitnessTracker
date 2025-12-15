@@ -11,6 +11,9 @@ router.get('/', userController.findAll);
 // GET user by ID 
 router.get('/:id', userController.findById);
 
+// GET user by username
+router.get('/username/:username', userController.findByUsername);
+
 // Create user
 router.post('/create', userController.create);
 

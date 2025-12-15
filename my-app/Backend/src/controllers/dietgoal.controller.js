@@ -67,6 +67,14 @@ exports.update = (req, res) => {
     });
 };
 
+// UPDATE COMPLETION STATUS
+exports.updateCompletion = (req, res) => {
+    DietGoal.updateCompletion(req.params.id, req.body.completion, (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.json({ message: "Diet goal completion updated", result });
+    });
+};
+
 // DELETE
 exports.delete = (req, res) => {
     DietGoal.delete(req.params.id, (err, result) => {

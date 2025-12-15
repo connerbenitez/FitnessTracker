@@ -3,10 +3,10 @@ const dbConn = require('../../config/db.config');
 
 class ExerciseGoal {
     constructor(exercisegoal) {
-        this.exercise_goal_id = exercisegoal.exercise_goal_id;
-        
+        this.exercise_goal_id = exercisegoal.exercise_goal_id; // Primary key
         this.user_id = exercisegoal.user_id;
         this.description = exercisegoal.description;
+        this.completion = exercisegoal.completion; // Boolean
         this.start_date = exercisegoal.start_date;
         this.end_date = exercisegoal.end_date;
         this.goal_distance = exercisegoal.goal_distance;
@@ -17,7 +17,6 @@ class ExerciseGoal {
     // CREATE
     static create(goal, result) {
         const insertData = {
-            
             user_id: goal.user_id,
             description: goal.description,
             start_date: goal.start_date,
@@ -69,22 +68,38 @@ class ExerciseGoal {
     static update(goal_id, goalData, result) {
         const sql = `
             UPDATE exercisegoal 
-            SET exercise_id = ?, user_id = ?, description = ?, start_date = ?, end_date = ?, 
-                goal_distance = ?, goal_type = ?, goal_time = ?
+            SET user_id = ?, description = ?, start_date = ?, end_date = ?, 
+                completion = ?, goal_distance = ?, goal_type = ?, goal_time = ?
             WHERE exercise_goal_id = ?
         `;
 
         const params = [
-            goalData.exercise_id,
             goalData.user_id,
             goalData.description,
             goalData.start_date,
             goalData.end_date,
+            goalData.completion,
             goalData.goal_distance,
             goalData.goal_type,
             goalData.goal_time,
             goal_id
         ];
+
+        dbConn.query(sql, params, (err, res) => {
+            if (err) return result(err, null);
+            result(null, res);
+        });
+    }
+
+    // UPDATE COMPLETION STATUS
+    static updateCompletion(goal_id, completion, result) {
+        const sql = `
+            UPDATE exercisegoal
+            SET completion = ?
+            WHERE exercise_goal_id = ?
+        `;
+
+        const params = [completion, goal_id];
 
         dbConn.query(sql, params, (err, res) => {
             if (err) return result(err, null);

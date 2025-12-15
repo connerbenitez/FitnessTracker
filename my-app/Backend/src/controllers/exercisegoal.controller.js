@@ -43,6 +43,14 @@ exports.update = (req, res) => {
     });
 };
 
+// UPDATE COMPLETION STATUS
+exports.updateCompletion = (req, res) => {
+    ExerciseGoal.updateCompletion(req.params.id, req.body.completion, (err, result) => {
+        if (err) return res.status(500).send(err);
+        res.json({ message: "Exercise goal completion updated", result });
+    });
+};
+
 // DELETE
 exports.delete = (req, res) => {
     ExerciseGoal.delete(req.params.id, (err, result) => {
