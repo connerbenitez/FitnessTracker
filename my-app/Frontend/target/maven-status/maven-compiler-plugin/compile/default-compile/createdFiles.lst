@@ -1,4 +1,7 @@
-com\mycompany\fitnesstracker\APIclient.class
+com\mycompany\fitnesstracker\MainScreenExerciseFood$2.class
 com\mycompany\fitnesstracker\MainScreen.class
-com\mycompany\fitnesstracker\MainScreen$1.class
+com\mycompany\fitnesstracker\MainScreenExerciseFood$Food.class
+com\mycompany\fitnesstracker\MainScreenExerciseFood.class
+com\mycompany\fitnesstracker\APIclient.class
+com\mycompany\fitnesstracker\MainScreenExerciseFood$1.class
 com\mycompany\fitnesstracker\FitnessTracker.class
