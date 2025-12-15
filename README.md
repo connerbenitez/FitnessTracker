@@ -4,9 +4,8 @@
 Fitness Tracker App, using MySQLWorkbench, Node.js, and Java GUI.
 
 ## Installation Instructions
-# Installation Guide
 
-## Database
+### Database
 *Note: If you already have MySQL Workbench, skip to Step 2.*
 
 1.  Download MySQL Workbench from this link: https://dev.mysql.com/downloads/workbench/
@@ -23,12 +22,12 @@ Fitness Tracker App, using MySQLWorkbench, Node.js, and Java GUI.
 11. If the schema `fitness_tracker` is not there, right-click under the schemas tab and select **Refresh All**.
 12. Once the schema appears, the Database is set up.
 
-## Node.js
+### Node.js
 1.  Download Node.js at: https://nodejs.org/en/download
 2.  Follow the instructions to download and install it on your local system.
 3.  Run `node` in your Command Prompt to verify proper installation.
 
-## Running the Application Locally
+### Running the Application Locally
 1.  Navigate to the folder directory.
 2.  Turn on the Database server in MySQL Workbench.
 3.  Download Visual Studio Code (if not already installed): https://code.visualstudio.com/download
