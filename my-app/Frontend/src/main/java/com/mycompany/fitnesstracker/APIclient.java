@@ -13,10 +13,41 @@ import java.util.Date;
 import com.google.gson.JsonObject;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 
 
 public class APIclient {
 
+    public void addUser(String email, String username, String password, Timestamp signupDate) throws Exception {
+        
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Format timestamp to a string SQL/JSON-friendly: yyyy-MM-dd HH:mm:ss
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = sdf.format(signupDate);
+
+        // Build JSON payload
+        String json = String.format(
+            "{ \"username\": \"%s\", \"password\": \"%s\", \"first_name\": null, \"last_name\": null, \"email\": \"%s\", \"start_date\": \"%s\" }",
+            username, password, email, formattedDate
+        );
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://127.0.0.1:4001/api/users/create"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 300) {
+            // Include response body to help debug backend errors
+            throw new RuntimeException("Failed to add user. Response code: " + response.statusCode() 
+                                       + " Body: " + response.body());
+        }
+    }
+    
     public String getUsers() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
         

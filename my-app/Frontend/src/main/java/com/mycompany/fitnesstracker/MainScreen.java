@@ -89,7 +89,7 @@ public class MainScreen extends javax.swing.JFrame {
         createAccountButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jpSignupPassword = new javax.swing.JPasswordField();
-        jTextField4 = new javax.swing.JTextField();
+        jtSignupEmail = new javax.swing.JTextField();
         MainPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -212,8 +212,8 @@ public class MainScreen extends javax.swing.JFrame {
 
         jpSignupPassword.setText("jPasswordField1");
 
-        jTextField4.setText("Email");
-        jTextField4.addActionListener(this::jTextField4ActionPerformed);
+        jtSignupEmail.setText("Email");
+        jtSignupEmail.addActionListener(this::jtSignupEmailActionPerformed);
 
         javax.swing.GroupLayout SignupPanelLayout = new javax.swing.GroupLayout(SignupPanel);
         SignupPanel.setLayout(SignupPanelLayout);
@@ -231,7 +231,7 @@ public class MainScreen extends javax.swing.JFrame {
                             .addGroup(SignupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jpSignupPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addComponent(jtSignupUsername, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField4)))))
+                                .addComponent(jtSignupEmail)))))
                 .addContainerGap(228, Short.MAX_VALUE))
         );
         SignupPanelLayout.setVerticalGroup(
@@ -240,7 +240,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtSignupEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addComponent(jtSignupUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -649,9 +649,9 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtSignupUsernameActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jtSignupEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtSignupEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_jtSignupEmailActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         jtLoginUsername.setText("Username");
@@ -880,9 +880,43 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
         CardLayout card = (CardLayout) jPanel1.getLayout();
-        // todo: create account
-        JOptionPane.showMessageDialog(jPanel1, "Account not created because this isn't implemented yet");
 
+        APIclient api = new APIclient();
+    
+        // Get user input
+        String email = jtSignupEmail.getText().trim();
+        String username = jtSignupUsername.getText().trim();
+        String password = jpSignupPassword.getText().trim();
+
+        // Basic validation
+        if (email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
+        // Optional: more advanced validation
+        if (!email.contains("@")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address.");
+            return;
+        }
+
+        // Generate signup timestamp
+        java.sql.Timestamp signupDate = new java.sql.Timestamp(System.currentTimeMillis());
+
+        try {
+            api.addUser(email, username, password, signupDate);
+
+            JOptionPane.showMessageDialog(this, "User registered successfully!");
+            // Clear the fields
+            jtSignupEmail.setText("Email");
+            jtSignupUsername.setText("Username");
+            jpSignupPassword.setText("...............");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to register.");
+        }
+        
         card.show(jPanel1, "LoginPanel");
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
@@ -995,8 +1029,10 @@ public class MainScreen extends javax.swing.JFrame {
             }
 
             String newGoalId = UUID.randomUUID().toString(); // unique exercise_id or diet_id
-            Date startDate = new Date(System.currentTimeMillis());
+            //Date startDate = new Date(System.currentTimeMillis());
             int completion = 0;
+            
+            java.sql.Date startDate = new java.sql.Date(System.currentTimeMillis());
             
             String userIdString = String.valueOf(userId);
             boolean success = api.addGoal(userIdString, goalType, newGoalId, goalText, completion, startDate);
@@ -1424,7 +1460,6 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JButton jbAdd;
     private javax.swing.JButton jbFollow;
     private javax.swing.JButton jbGoalCompletion;
@@ -1436,6 +1471,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JTextField jtEnterUsername;
     private javax.swing.JTextField jtLoginUsername;
     private javax.swing.JTextArea jtMessages;
+    private javax.swing.JTextField jtSignupEmail;
     private javax.swing.JTextField jtSignupUsername;
     private javax.swing.JButton loginButton;
     private javax.swing.JButton logoutButton;
