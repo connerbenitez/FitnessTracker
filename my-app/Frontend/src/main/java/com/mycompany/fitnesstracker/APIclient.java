@@ -9,7 +9,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Date;
+import java.util.Date;
 import com.google.gson.JsonObject;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -188,7 +188,7 @@ public class APIclient {
     }
     
 
-    private static final String BASE_URL = "http://127.0.0.1:4001/api";
+    private static final String BASE_URL1 = "http://127.0.0.1:4001/api";
     
     public static boolean addGoal(String userId, String goalType, String goalId, String description, int completion, Date startDate) {
         try {
@@ -217,7 +217,7 @@ public class APIclient {
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + endpoint))
+                    .uri(URI.create(BASE_URL1 + endpoint))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -493,12 +493,12 @@ public class APIclient {
     }
     
     // Get all followers of a user
-    public String getFollowers(int userId) throws Exception {
-        HttpRequest request = buildRequest("/api/followers/followers/" + userId)
-                .GET()
-                .build();
-        return executeRequest(request);
-    }
+//    public String getFollowers(int userId) throws Exception {
+//        HttpRequest request = buildRequest("/api/followers/followers/" + userId)
+//                .GET()
+//                .build();
+//        return executeRequest(request);
+//    }
     
     // Get all users a user is following
     public String getFollowing(int userId) throws Exception {

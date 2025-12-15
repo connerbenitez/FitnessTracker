@@ -14,7 +14,7 @@ public class FitnessTracker {
         System.out.println("Hello World!");
         
         java.awt.EventQueue.invokeLater(() -> {
-            new MainScreenExerciseFood().setVisible(true);
+            new MainScreen().setVisible(true);
         });
     }
 }
