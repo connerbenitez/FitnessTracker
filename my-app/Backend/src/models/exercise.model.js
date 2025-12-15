@@ -87,23 +87,6 @@ class Exercise {
             }
         );
     }
-    // Find a exercise type since a specific date
- static findSinceDate(user_id, type, date, result) {
-    const sql = `
-        SELECT *
-        FROM exercise
-        WHERE user_id = ? 
-        AND type = ?
-        AND date >= ?
-        ORDER BY date DESC
-    `;
-
-    dbConn.query(sql, [user_id, type, date], (err, res) => {
-        if (err) return result(err, null);
-        result(null, res);
-    });
-}
-
 
     // UPDATE
     static update(exercise_id, exerciseData, result) {

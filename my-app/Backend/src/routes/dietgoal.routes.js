@@ -20,6 +20,9 @@ router.get('/:id', dietgoalController.findById);
 // UPDATE
 router.put('/:id', dietgoalController.update);
 
+// UPDATE COMPLETION STATUS
+router.put("/:id/completion", dietgoalController.updateCompletion);
+
 // DELETE
 router.delete('/:id', dietgoalController.delete);
 

@@ -42,14 +42,6 @@ exports.findByType = (req, res) => {
         res.json(exercise);
     });
 };
-exports.findSinceDate = (req, res) => {
-    const { user_id, type, date } = req.params;
-
-    Exercise.findSinceDate(user_id, type, date, (err, exercise) => {
-        if (err) return res.status(500).send(err);
-        res.json(exercise);
-    });
-};
 
 // FIND BY DATE
 exports.findByDate = (req, res) => {

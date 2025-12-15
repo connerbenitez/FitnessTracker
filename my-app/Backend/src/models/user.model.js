@@ -62,6 +62,14 @@ User.findByEmail = function (email, result) {
     });
 };
 
+// FIND USER BY USERNAME
+User.findByUsername = function (username, result) {
+    dbConn.query("SELECT * FROM user WHERE username = ?", [username], function (err, res) {
+        if (err) return result(err, null);
+        result(null, res);
+    });
+};
+
 // FIND USER BY ID
 User.findById = function (id, result) {
     dbConn.query("SELECT * FROM user WHERE user_id = ?", [id], function (err, res) {

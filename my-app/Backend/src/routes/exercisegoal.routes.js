@@ -18,6 +18,9 @@ router.get("/:id", exerciseGoalController.findById);
 // UPDATE
 router.put("/:id", exerciseGoalController.update);
 
+// UPDATE COMPLETION STATUS
+//console.log("Controller function:", exerciseGoalController.updateCompletion);
+router.put("/:id/completion", exerciseGoalController.updateCompletion);
 // DELETE
 router.delete("/:id", exerciseGoalController.delete);
 

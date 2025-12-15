@@ -85,3 +85,10 @@ exports.findById = function (req, res) {
         res.status(200).json({ errors: false, data: user });
     });
 };
+
+exports.findByUsername = function (req, res) {
+    User.findByUsername(req.params.id, function (err, user) {
+        if (err) return res.status(500).json({ errors: true });
+        res.status(200).json({ errors: false, data: user });
+    });
+};
