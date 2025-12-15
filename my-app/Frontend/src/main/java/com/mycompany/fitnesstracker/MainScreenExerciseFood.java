@@ -126,7 +126,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         foodNameCombo = new javax.swing.JComboBox<>();
         foodCalories = new javax.swing.JSpinner();
-        jSpinner5 = new javax.swing.JSpinner();
+        dietDateTime = new javax.swing.JSpinner();
         AddDietButton = new javax.swing.JButton();
 
         jLabel13.setText("End Time");
@@ -431,7 +431,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
         foodCalories.setModel(new javax.swing.SpinnerNumberModel(0, 0, 3000, 10));
 
-        jSpinner5.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        dietDateTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
 
         AddDietButton.setText("Add Diet Entry");
         AddDietButton.addActionListener(this::AddDietButtonActionPerformed);
@@ -495,7 +495,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                                     .addComponent(foodNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(AddDietButton))
-                                .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dietDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -537,7 +537,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(StartTimeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)
-                    .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dietDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -825,13 +825,16 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                     return; // Exit once found
             }
         }
-        // If not found (custom entry), add handling here
+        // If not found (custom entry), add handling here if we have time
         // foodCalories.setValue(0);
     }
     }//GEN-LAST:event_foodNameComboActionPerformed
 
     private void AddDietButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddDietButtonActionPerformed
     try {
+        // create api client
+        APIclient api = new APIclient();
+        
         // Create a json object to send to the backend
         JsonObject dietJson = new JsonObject();
 
@@ -841,18 +844,68 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         String selectedFood = foodNameCombo.getSelectedItem().toString();
         int selectedCalories = (Integer) foodCalories.getValue();
         
-        // todo
+        int food_id = -1;
         
+        // search it in the list
+        for (Food food : foodList) {
+            if (selectedFood.equalsIgnoreCase(food.food_name) 
+                    && selectedCalories == food.calories) {
+                food_id = food.food_id;
+                break;
+            }
+        } 
+        // if we found a match create entry with food_id
+        // otherwise, create a new food entry:
+        String response = "";
+        if (food_id == -1) {
+            JsonObject foodJson = new JsonObject();
+            foodJson.addProperty("food_name", selectedFood);
+            foodJson.addProperty("calories", selectedCalories);
+            
+            response = api.createFood(foodJson.toString());
+            System.out.println("API response: " + response);
+            JsonObject foodResponseJson = JsonParser.parseString(response).getAsJsonObject();
+            
+            food_id = foodResponseJson.get("food_id").getAsInt();
+            
+            // update selection lists
+            Food newFood = new Food(food_id, selectedFood, selectedCalories);
+            foodList.add(newFood);
+            
+            boolean alreadyInCombo = false;
+                for (int i = 0; i < foodNameCombo.getItemCount(); i++) {
+                    if (selectedFood.equalsIgnoreCase(foodNameCombo.getItemAt(i))) {
+                        alreadyInCombo = true;
+                        break;
+                    }
+                }
+                if (!alreadyInCombo) {
+                    foodNameCombo.addItem(selectedFood);
+                }
+                
+                System.out.println("Created new food with ID: " + food_id);
+        }
+        
+        
+        // Add selected food to diet
+        dietJson.addProperty("food_id", food_id);
+        
+        // Get date and time from spinner
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        Date foodTime = (Date) dietDateTime.getValue();
+        
+        dietJson.addProperty("time", foodTime != null ? timeFormat.format(foodTime) : "");
+        dietJson.addProperty("date", foodTime != null ? dateFormat.format(foodTime) : "");
         
         System.out.println(dietJson);
         
-        String diet = dietJson.toString();
-        
-        APIclient api = new APIclient();
+        String diet = dietJson.toString();    
         api.createDiet(diet);
         
-        // update exercise table
-        refreshExerciseButtonActionPerformed(evt);
+        // update diet table
+        refreshDietButtonActionPerformed(evt);
 
     } catch (Exception e) {
         e.printStackTrace();
@@ -897,6 +950,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     private javax.swing.JPanel SignupPanel;
     private javax.swing.JSpinner StartTimeSpinner;
     private javax.swing.JButton createAccountButton;
+    private javax.swing.JSpinner dietDateTime;
     private javax.swing.JTable dietTable;
     private javax.swing.JTable exerciseTable;
     private javax.swing.JSpinner foodCalories;
@@ -931,7 +985,6 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JSpinner jSpinner5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

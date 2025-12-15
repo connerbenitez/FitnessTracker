@@ -507,7 +507,7 @@
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="AddDietButton" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Component id="jSpinner5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="dietDateTime" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jScrollPane5" min="-2" pref="299" max="-2" attributes="0"/>
@@ -561,7 +561,7 @@
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="StartTimeSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jSpinner5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dietDateTime" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -854,7 +854,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner5">
+            <Component class="javax.swing.JSpinner" name="dietDateTime">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                   <SpinnerModel initial="now" stepSize="12" type="date"/>

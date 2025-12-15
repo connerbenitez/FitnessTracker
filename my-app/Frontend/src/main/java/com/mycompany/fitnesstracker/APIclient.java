@@ -30,7 +30,8 @@ public class APIclient {
     private String executeRequest(HttpRequest request) throws Exception {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         
-        if (response.statusCode() != 200) {
+        int statusCode = response.statusCode();
+        if (statusCode < 200 || statusCode >= 300) {
             throw new RuntimeException("Failed: HTTP error code: " + response.statusCode() + 
                     ", Response: " + response.body());
         }
