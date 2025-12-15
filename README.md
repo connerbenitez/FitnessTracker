@@ -36,7 +36,7 @@ Fitness Tracker App, using MySQLWorkbench, Node.js, and Java GUI.
     * `npm install`
     * `npm start`
 6.  Open a separate terminal and navigate (using `cd`) to wherever you placed the repository folder.
-7.  Run `npm install` and `npm start` again in this separate terminal.
+7.  Navigate into the `1.0` folder where the .jar file is.
 8.  Type the following command:
     * `java -jar FitnessTracker-1.0.jar`
 9.  The app should open.
