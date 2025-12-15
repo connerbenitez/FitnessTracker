@@ -6,16 +6,26 @@ package com.mycompany.fitnesstracker;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import java.awt.CardLayout;
 import javax.swing.SwingUtilities;
-
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.awt.event.ActionListener;
+import java.util.UUID;
+import java.sql.Date;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import java.awt.Color;
+import java.awt.Component;
+
 
 /**
  *
@@ -25,12 +35,17 @@ public class MainScreen extends javax.swing.JFrame {
     
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainScreen.class.getName());
-
+    Integer userId = null;
+    private java.util.List<Integer> goalIds = new java.util.ArrayList<>();
+    private java.util.List<Integer> goalCompletion = new java.util.ArrayList<>();
+    private java.util.List<String> goalType = new java.util.ArrayList<>();
+    
     /**
      * Creates new form MainScreen
      */
     public MainScreen() {
         initComponents();
+        
     }
 
     /**
@@ -42,40 +57,43 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         LoginPanel = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        jtLoginUsername = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         signupButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
         SignupPanel = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
+        jtSignupUsername = new javax.swing.JTextField();
         createAccountButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        jpSignupPassword = new javax.swing.JPasswordField();
         jTextField4 = new javax.swing.JTextField();
         MainPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtEnterUsername = new javax.swing.JTextField();
         logoutButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        usersDisplay = new javax.swing.JTextArea();
-        getUserButton = new javax.swing.JButton();
-        getUserButton2 = new javax.swing.JButton();
+        jbFollow = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jlGoals = new javax.swing.JList<>();
+        jtAddGoal = new javax.swing.JTextField();
+        jbAdd = new javax.swing.JButton();
+        jrDietGoal = new javax.swing.JRadioButton();
+        jrExerciseGoal = new javax.swing.JRadioButton();
+        jbGoalCompletion = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        userTable = new javax.swing.JTable();
+        jtMessages = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new java.awt.CardLayout());
 
-        jTextField2.setText("Username");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        jtLoginUsername.setText("Username");
+        jtLoginUsername.addActionListener(this::jtLoginUsernameActionPerformed);
 
         loginButton.setText("Login");
         loginButton.addActionListener(this::loginButtonActionPerformed);
@@ -106,7 +124,7 @@ public class MainScreen extends javax.swing.JFrame {
                                 .addComponent(signupButton))
                             .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)))))
+                                .addComponent(jtLoginUsername, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addContainerGap(277, Short.MAX_VALUE))
         );
         LoginPanelLayout.setVerticalGroup(
@@ -115,20 +133,20 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtLoginUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(signupButton)
                     .addComponent(loginButton))
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
 
         jPanel1.add(LoginPanel, "card2");
 
-        jTextField3.setText("Username");
-        jTextField3.addActionListener(this::jTextField3ActionPerformed);
+        jtSignupUsername.setText("Username");
+        jtSignupUsername.addActionListener(this::jtSignupUsernameActionPerformed);
 
         createAccountButton.setText("Create Account");
         createAccountButton.addActionListener(this::createAccountButtonActionPerformed);
@@ -136,7 +154,7 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 48)); // NOI18N
         jLabel7.setText("Fitness Tracker");
 
-        jPasswordField2.setText("jPasswordField1");
+        jpSignupPassword.setText("jPasswordField1");
 
         jTextField4.setText("Email");
         jTextField4.addActionListener(this::jTextField4ActionPerformed);
@@ -155,8 +173,8 @@ public class MainScreen extends javax.swing.JFrame {
                         .addGroup(SignupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(createAccountButton)
                             .addGroup(SignupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jpSignupPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(jtSignupUsername, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField4)))))
                 .addContainerGap(277, Short.MAX_VALUE))
         );
@@ -168,137 +186,136 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtSignupUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpSignupPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(createAccountButton)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(405, Short.MAX_VALUE))
         );
 
         jPanel1.add(SignupPanel, "card3");
 
-        jLabel1.setText("Track Exercise");
-
-        jLabel2.setText("Track Food");
-
-        jLabel3.setText("Goals/Charts");
-
-        jLabel4.setText("Share With Friends");
+        jLabel3.setText("Goals");
 
         jLabel5.setText("Find Friends");
 
-        jTextField1.setText("Enter a username");
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        jtEnterUsername.setText("Enter a username");
+        jtEnterUsername.addActionListener(this::jtEnterUsernameActionPerformed);
 
         logoutButton.setText("Logout");
         logoutButton.addActionListener(this::logoutButtonActionPerformed);
 
-        usersDisplay.setColumns(20);
-        usersDisplay.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
-        usersDisplay.setRows(5);
-        jScrollPane1.setViewportView(usersDisplay);
+        jbFollow.setText("Follow");
+        jbFollow.addActionListener(this::jbFollowActionPerformed);
 
-        getUserButton.setText("Get all users");
-        getUserButton.addActionListener(this::getUserButtonActionPerformed);
+        jlGoals.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(jlGoals);
 
-        getUserButton2.setText("Get all users");
-        getUserButton2.addActionListener(this::getUserButton2ActionPerformed);
+        jtAddGoal.setText("Add a Goal");
 
-        userTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(userTable);
+        jbAdd.setText("Add");
+        jbAdd.addActionListener(this::jbAddActionPerformed);
+
+        buttonGroup1.add(jrDietGoal);
+        jrDietGoal.setText("Diet Goal");
+
+        buttonGroup1.add(jrExerciseGoal);
+        jrExerciseGoal.setText("Exercise Goal");
+
+        jbGoalCompletion.setText("Goal is Completed");
+        jbGoalCompletion.addActionListener(this::jbGoalCompletionActionPerformed);
+
+        jtMessages.setColumns(20);
+        jtMessages.setRows(5);
+        jScrollPane2.setViewportView(jtMessages);
+
+        jLabel1.setText("Messages:");
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(119, 119, 119))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, MainPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(getUserButton))
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(logoutButton)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(78, 78, 78))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(getUserButton2))
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(21, 21, 21))))
+                .addGap(15, 15, 15)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGap(318, 318, 318)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(96, 96, 96))
-            .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                    .addGap(30, 30, 30)
-                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel1))
-                    .addContainerGap(507, Short.MAX_VALUE)))
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addComponent(logoutButton)
+                        .addGap(0, 196, Short.MAX_VALUE))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(jbGoalCompletion))
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jrDietGoal)
+                                    .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jrExerciseGoal)
+                                        .addComponent(jtAddGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(MainPanelLayout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(jbAdd)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)))
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jtEnterUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbFollow))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(jLabel5)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(64, 64, 64)
-                .addComponent(jLabel5)
-                .addGap(9, 9, 9)
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(getUserButton)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(getUserButton2)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(63, 63, 63))
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtEnterUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbFollow)))
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)))
-                .addComponent(logoutButton)
-                .addGap(14, 14, 14))
-            .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel1)
-                    .addGap(142, 142, 142)
-                    .addComponent(jLabel3)
-                    .addContainerGap(408, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbGoalCompletion)))
+                .addGap(75, 75, 75)
+                .addComponent(jtAddGoal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(jrExerciseGoal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jrDietGoal)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logoutButton)
+                        .addGap(14, 14, 14))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
         );
 
         jPanel1.add(MainPanel, "card4");
@@ -323,107 +340,464 @@ public class MainScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jtEnterUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtEnterUsernameActionPerformed
         
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jtEnterUsernameActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jtLoginUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtLoginUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jtLoginUsernameActionPerformed
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
         CardLayout card = (CardLayout)jPanel1.getLayout();
         card.show(jPanel1, "card3"); // SignupPanel
     }//GEN-LAST:event_signupButtonActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void jtSignupUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtSignupUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_jtSignupUsernameActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+        jtLoginUsername.setText("Username");
+        jPasswordField1.setText("..............");
         CardLayout card = (CardLayout)jPanel1.getLayout();
         card.show(jPanel1, "card2"); // LoginPanel
+        
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        CardLayout card = (CardLayout)jPanel1.getLayout();
-        card.show(jPanel1, "card4"); // MainPanel
+ 
+            try {
+                APIclient api = new APIclient();
+
+                String result = api.getUsers();
+
+                if (result == null) {
+                    JOptionPane.showMessageDialog(this,
+                        "Could not connect to server!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                try {
+                    JsonObject root = JsonParser.parseString(result).getAsJsonObject();
+                    JsonArray usersArray = root.getAsJsonArray("data");
+
+                    String targetUsername = jtLoginUsername.getText().trim(); // login username field
+                    String targetPassword = jPasswordField1.getText();    // login password field
+                    boolean foundUser = false;
+
+                    for (JsonElement el : usersArray) {
+                        JsonObject userObj = el.getAsJsonObject();
+                        String username = userObj.get("username").getAsString();
+
+                        if (username.equalsIgnoreCase(targetUsername)) {
+                            foundUser = true;
+                            this.userId = userObj.get("user_id").getAsInt();
+                            String storedPassword = userObj.get("password").getAsString();
+
+                            if (!storedPassword.equals(targetPassword)) {
+                                JOptionPane.showMessageDialog(this,
+                                    "Incorrect password!",
+                                    "Login error",
+                                    JOptionPane.WARNING_MESSAGE
+                                );
+                                return; // stop login
+                            }
+
+                            break; // username matched, password ok
+                        }
+                    }
+
+                    if (!foundUser) {
+                        JOptionPane.showMessageDialog(this,
+                            "Username not found!",
+                            "Login error",
+                            JOptionPane.WARNING_MESSAGE
+                        );
+                        return;
+                    }
+
+                    // SUCCESS → switch screens
+                    CardLayout card = (CardLayout) jPanel1.getLayout();
+                    card.show(jPanel1, "card4");
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this,
+                        "Invalid server response!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+
+            } catch (Exception ex) {
+                Logger.getLogger(MainScreen.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            }
+
+
+//        try {
+//            APIclient api = new APIclient();
+//
+//            // Fetch exercise goals
+//            String exerciseResult = api.getGoals(userId);
+//            JsonArray exerciseArray = JsonParser.parseString(exerciseResult).getAsJsonArray();
+//
+//            // Fetch diet goals
+//            String dietResult = api.getDietGoals(userId);
+//            JsonArray dietArray = JsonParser.parseString(dietResult).getAsJsonArray();
+//
+//            // Create the list model
+//            DefaultListModel<String> model = new DefaultListModel<>();
+//
+//            // Add exercise goals
+//            for (JsonElement el : exerciseArray) {
+//                JsonObject obj = el.getAsJsonObject();
+//
+//                String description = obj.get("description").getAsString();
+//                int completion = obj.get("completion").getAsInt();  // 0 or 1
+//
+//                // Use checkmark or X
+//                String prefix = (completion == 1 ? "✔️ " : "✖️ ");
+//
+//                model.addElement(prefix + "Exercise: " + description);
+//            }
+//
+//            // Add diet goals
+//            for (JsonElement el : dietArray) {
+//                JsonObject obj = el.getAsJsonObject();
+//
+//                String description = obj.get("description").getAsString();
+//                int completion = obj.get("completion").getAsInt();
+//
+//                // Use checkmark or X
+//                String prefix = (completion == 1 ? "✔️ " : "✖️ ");
+//
+//                model.addElement(prefix + "Diet: " + description);
+//            }
+//
+//            // Update the JList
+//            jlGoals.setModel(model);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            APIclient api = new APIclient();
+
+            // Reset lists
+            goalIds.clear();
+            goalCompletion.clear();
+            goalType.clear();
+
+            // Fetch exercise goals
+            String exerciseResult = api.getGoals(userId);
+            JsonArray exerciseArray = JsonParser.parseString(exerciseResult).getAsJsonArray();
+
+            // Fetch diet goals
+            String dietResult = api.getDietGoals(userId);
+            JsonArray dietArray = JsonParser.parseString(dietResult).getAsJsonArray();
+
+            DefaultListModel<String> model = new DefaultListModel<>();
+
+            // Add exercise goals
+            for (JsonElement el : exerciseArray) {
+                JsonObject obj = el.getAsJsonObject();
+
+                int id = obj.get("exercise_goal_id").getAsInt(); // FIXED
+                String description = obj.get("description").getAsString();
+                int completion = obj.get("completion").getAsInt();
+
+                goalIds.add(id);
+                goalCompletion.add(completion);
+                goalType.add("exercise");
+
+                String prefix = (completion == 1 ? "✔️ " : "✖️ ");
+                model.addElement(prefix + "Exercise: " + description);
+            }
+
+            // Add diet goals
+            for (JsonElement el : dietArray) {
+                JsonObject obj = el.getAsJsonObject();
+
+                int id = obj.get("diet_goal_id").getAsInt(); // FIXED
+                String description = obj.get("description").getAsString();
+                int completion = obj.get("completion").getAsInt();
+
+                goalIds.add(id);
+                goalCompletion.add(completion);
+                goalType.add("diet");
+
+                String prefix = (completion == 1 ? "✔️ " : "✖️ ");
+                model.addElement(prefix + "Diet: " + description);
+            }
+
+            jlGoals.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            APIclient api = new APIclient();
+
+            String messageResult = api.getMessages(userId);
+
+            JsonObject root = JsonParser.parseString(messageResult).getAsJsonObject();
+            JsonArray messageArray = root.getAsJsonArray("data");
+
+            StringBuilder messageText = new StringBuilder();
+
+            for (JsonElement el : messageArray) {
+                JsonObject obj = el.getAsJsonObject();
+
+                String senderId = obj.get("sender").getAsString();
+                String message = obj.get("message").getAsString();
+
+                // Fetch sender user
+                String userResult = api.getUser(senderId);
+                JsonObject userRoot = JsonParser.parseString(userResult).getAsJsonObject();
+                JsonArray userArray = userRoot.getAsJsonArray("data");
+
+                if (userArray.size() > 0) {
+                    JsonObject userData = userArray.get(0).getAsJsonObject();
+                    String username = userData.get("username").getAsString();
+
+                    messageText.append(username)
+                               .append(": ")
+                               .append(message)
+                               .append("\n\n");
+                }
+            }
+
+            jtMessages.setText(messageText.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
-        CardLayout card = (CardLayout)jPanel1.getLayout();
-        card.show(jPanel1, "card4"); // MainPanel
+        CardLayout card = (CardLayout) jPanel1.getLayout();
+        card.show(jPanel1, "card4");
+        
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
-    private void getUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButtonActionPerformed
+    private void jbFollowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFollowActionPerformed
+//        try {
+//        // 1. Call the API class
+//        APIclient api = new APIclient();
+//        String result = api.getUsers();
+//
+//        // 2. Convert to Pretty JSON
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//        JsonElement jsonElement = JsonParser.parseString(result);
+//        String prettyResult = gson.toJson(jsonElement);
+//        
+//        // 3. Display the result
+//        usersDisplay.setText(prettyResult);
+//
+//    } catch (Exception e) {
+//        usersDisplay.setText("Failed: " + e.getMessage());
+//        e.printStackTrace();
+//    }
+                                             
         try {
-        // 1. Call the API class
-        APIclient api = new APIclient();
-        String result = api.getUsers();
+            // 1. Call API
+            APIclient api = new APIclient();
+            String result = api.getUsers();
 
-        // 2. Convert to Pretty JSON
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement jsonElement = JsonParser.parseString(result);
-        String prettyResult = gson.toJson(jsonElement);
-        
-        // 3. Display the result
-        usersDisplay.setText(prettyResult);
+            // 2. Get username from text field
+            String enteredUsername = jtEnterUsername.getText().trim();
 
-    } catch (Exception e) {
-        usersDisplay.setText("Failed: " + e.getMessage());
-        e.printStackTrace();
-    }
-    }//GEN-LAST:event_getUserButtonActionPerformed
+            // 3. Parse JSON
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonObject rootObject = JsonParser.parseString(result).getAsJsonObject();
 
-    private void getUserButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getUserButton2ActionPerformed
-        try {
-        // 1. Fetch the data (App will freeze briefly)
-        APIclient api = new APIclient();
-        String jsonResponse = api.getUsers();
+            // IMPORTANT: Get "data" array from your API response
+            JsonArray usersArray = rootObject.getAsJsonArray("data");
 
-        // 2. Define the Columns you want to see
-        // (We purposely leave out "Password" because it's sensitive!)
-        String[] columnNames = {"ID", "Username", "First Name", "Last Name", "Email", "Start Date"};
-        
-        // 3. Create a Table Model with zero rows initially
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+            // 4. Filter users
+            JsonArray filteredUsers = new JsonArray();
 
-        // 4. Parse the JSON Tree
-        // First, get the root object {"errors":..., "data":...}
-        JsonObject root = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        
-        // Next, grab the "data" array
-        JsonArray dataList = root.getAsJsonArray("data");
+            for (JsonElement element : usersArray) {
+                JsonObject userObject = element.getAsJsonObject();
+                String username = userObject.get("username").getAsString();
 
-        // 5. Loop through the array and add rows
-        for (JsonElement element : dataList) {
-            JsonObject user = element.getAsJsonObject();
+                if (username.equalsIgnoreCase(enteredUsername)) {
+                    filteredUsers.add(userObject);
+                }
+            }
 
-            // Create a row object matching the order of your 'columnNames'
-            Object[] row = {
-                user.get("user_id").getAsInt(),
-                user.get("username").getAsString(),
-                user.get("first_name").getAsString(),
-                user.get("last_name").getAsString(),
-                user.get("email").getAsString(),
-                user.get("start_date").getAsString()
-            };
+            
+            
+            
+            
+            if (filteredUsers.size() == 1) {
 
-            model.addRow(row);
+                try {
+
+                    // 1. Get the matched user object
+                    JsonObject userObj = filteredUsers
+                            .get(0)
+                            .getAsJsonObject();
+
+                    // 2. Extract ID + username
+                    int followingUserId = userObj.get("user_id").getAsInt();
+                    String username = userObj.get("username").getAsString();
+
+                    // 3. Prevent following yourself
+                    if (followingUserId == userId) {
+                        JOptionPane.showMessageDialog(this, "You cannot follow yourself.");
+                        return;
+                    }
+
+                    // 4. Add follower relationship
+                    api.addFollower(userId, followingUserId);
+
+                    JOptionPane.showMessageDialog(this,
+                            "You are now following " + username + "!");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Failed to follow user.");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No users found with username: " + enteredUsername);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        // 6. Apply the model to your JTable
-        userTable.setModel(model);
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_getUserButton2ActionPerformed
+    }//GEN-LAST:event_jbFollowActionPerformed
+
+    private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
+        // TODO add your handling code here
+            APIclient api = new APIclient();
+
+            String goalText = jtAddGoal.getText().trim();
+            String goalType = null;
+
+            if (jrExerciseGoal.isSelected()) goalType = "exercise";
+            else if (jrDietGoal.isSelected()) goalType = "diet";
+
+            if (goalText.isEmpty() || goalType == null) {
+                JOptionPane.showMessageDialog(this, "Please enter a goal and select a type.");
+                return;
+            }
+
+            String newGoalId = UUID.randomUUID().toString(); // unique exercise_id or diet_id
+            Date startDate = new Date(System.currentTimeMillis());
+            int completion = 0;
+            
+            String userIdString = String.valueOf(userId);
+            boolean success = api.addGoal(userIdString, goalType, newGoalId, goalText, completion, startDate);
+            if (success) {
+                JOptionPane.showMessageDialog(this, goalType + " goal added successfully!");
+                jtAddGoal.setText("Add a Goal");
+                buttonGroup1.clearSelection();
+                if (goalType == "exercise") {
+                    DefaultListModel<String> model = (DefaultListModel<String>) jlGoals.getModel();
+                    model.addElement("✖ Exercise: " + goalText);
+                }
+                else if (goalType == "diet") {
+                    DefaultListModel<String> model = (DefaultListModel<String>) jlGoals.getModel();
+                    model.addElement("✖ Diet: " + goalText);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add goal. Try again.");
+            }
+        
+    }//GEN-LAST:event_jbAddActionPerformed
+
+    private void jbGoalCompletionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGoalCompletionActionPerformed
+        // TODO add your handling code here:
+        int index = jlGoals.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Select a goal first.");
+            return;
+        }
+
+        int goalId = goalIds.get(index);
+        String type = goalType.get(index);
+
+        // Update completion in DB
+        try {
+            APIclient api = new APIclient();
+            api.updateGoalCompletion(goalId, 1, type);  // set to completed
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Could not update goal.");
+            return;
+        }
+
+        // Update local list
+        goalCompletion.set(index, 1);
+
+        // Update what appears in the JList
+        String oldText = jlGoals.getModel().getElementAt(index);
+        String newText = "✔️ " + oldText.substring(2); // replace ✖️ with ✔️
+
+        ((DefaultListModel<String>) jlGoals.getModel()).set(index, newText);
+        
+        
+        
+        
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Do you want to share this goal completion with friends?",
+                "Share Goal",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                APIclient api = new APIclient();
+
+                // Message text you want to send
+                String cleanGoalText = newText.replace("✔️", "").trim();
+                String messageText = "I just completed a goal: " + cleanGoalText;
+
+                // 1. Get followers of this user
+                String followerResult = api.getFollowers(userId);
+
+                JsonObject root = JsonParser.parseString(followerResult).getAsJsonObject();
+                JsonArray followerArray = root.getAsJsonArray("data");
+
+                // 2. Send message to each follower
+                for (JsonElement el : followerArray) {
+                    JsonObject obj = el.getAsJsonObject();
+
+                    int recipientId = obj.get("follower_user_id").getAsInt();
+
+                    api.addMessage(userId, recipientId, messageText);
+                }
+
+                JOptionPane.showMessageDialog(this, "Goal shared with friends!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to share goal.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Goal not shared.");
+        }
+        
+    }//GEN-LAST:event_jbGoalCompletionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -454,29 +828,32 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JPanel LoginPanel;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel SignupPanel;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton createAccountButton;
-    private javax.swing.JButton getUserButton;
-    private javax.swing.JButton getUserButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JButton jbAdd;
+    private javax.swing.JButton jbFollow;
+    private javax.swing.JButton jbGoalCompletion;
+    private javax.swing.JList<String> jlGoals;
+    private javax.swing.JPasswordField jpSignupPassword;
+    private javax.swing.JRadioButton jrDietGoal;
+    private javax.swing.JRadioButton jrExerciseGoal;
+    private javax.swing.JTextField jtAddGoal;
+    private javax.swing.JTextField jtEnterUsername;
+    private javax.swing.JTextField jtLoginUsername;
+    private javax.swing.JTextArea jtMessages;
+    private javax.swing.JTextField jtSignupUsername;
     private javax.swing.JButton loginButton;
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton signupButton;
-    private javax.swing.JTable userTable;
-    private javax.swing.JTextArea usersDisplay;
     // End of variables declaration//GEN-END:variables
 }
