@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -132,7 +133,9 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         jLabel13.setText("End Time");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(187, 239, 206));
 
+        jPanel1.setBackground(new java.awt.Color(187, 239, 206));
         jPanel1.setLayout(new java.awt.CardLayout());
 
         jTextField2.setText("Username");
@@ -168,7 +171,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                             .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)))))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         LoginPanelLayout.setVerticalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +222,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                                 .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jTextField4)))))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         SignupPanelLayout.setVerticalGroup(
             SignupPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,7 +312,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(logoutButton))
-                        .addGap(0, 56, Short.MAX_VALUE))
+                        .addGap(0, 250, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(getUserButton2)))
@@ -346,6 +349,8 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
 
         jPanel1.add(MainPanel, "MainPanel");
 
+        ExerciseFoodEntry.setBackground(new java.awt.Color(187, 239, 206));
+
         jLabel8.setText("Your Exercise History");
 
         jLabel9.setText("Your Diet History");
@@ -356,6 +361,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         refreshDietButton.setText("Refresh");
         refreshDietButton.addActionListener(this::refreshDietButtonActionPerformed);
 
+        exerciseTable.setAutoCreateRowSorter(true);
         exerciseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -364,14 +370,30 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Exercise ID", "Type", "Distance", "Start Time", "End Time", "Date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         exerciseTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jScrollPane3.setViewportView(exerciseTable);
 
         jScrollPane6.setViewportView(jScrollPane3);
 
+        dietTable.setAutoCreateRowSorter(true);
         dietTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -380,9 +402,17 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Food Name", "Calories", "Time", "Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         dietTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         dietTable.setColumnSelectionAllowed(true);
         jScrollPane4.setViewportView(dietTable);
@@ -441,7 +471,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
         ExerciseFoodEntryLayout.setHorizontalGroup(
             ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -475,36 +505,35 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(0, 0, Short.MAX_VALUE)))))
                     .addComponent(jLabel1))
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreshDietButton))
                     .addComponent(jLabel15)
-                    .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
-                            .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel16)
-                                .addComponent(jLabel17)
-                                .addComponent(jLabel18))
-                            .addGap(41, 41, 41)
-                            .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(foodCalories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
-                                    .addComponent(foodNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(AddDietButton))
-                                .addComponent(dietDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel18))
+                        .addGap(41, 41, 41)
+                        .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(foodCalories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
+                                .addComponent(foodNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16)
+                                .addComponent(AddDietButton))
+                            .addComponent(dietDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         ExerciseFoodEntryLayout.setVerticalGroup(
             ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ExerciseFoodEntryLayout.createSequentialGroup()
+                .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ExerciseFoodEntryLayout.createSequentialGroup()
                         .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
                             .addComponent(refreshDietButton)
@@ -512,7 +541,7 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                             .addComponent(refreshExerciseButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ExerciseFoodEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -739,12 +768,22 @@ public class MainScreenExerciseFood extends javax.swing.JFrame {
                 calories = food.get("calories").getAsInt();
             }
             
+            // date/time formatting
+            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                    isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Date timeDate = isoFormat.parse(diet.get("time").getAsString());
+            Date dateDate = isoFormat.parse(diet.get("date").getAsString());
+            
             // create row
             Object[] row = {
                 food_name,
                 calories,
-                diet.get("time").getAsString(),
-                diet.get("date").getAsString()
+                timeFormat.format(timeDate),
+                dateFormat.format(dateDate)
             };
             
             // add row to table model
