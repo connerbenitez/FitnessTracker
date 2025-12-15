@@ -5,6 +5,7 @@ class Exercise {
     constructor(exercise) {
         this.exercise_id = exercise.exercise_id;
         this.user_id = exercise.user_id;
+        // this.exercise_goal_id = exercise.exercise_goal_id;
         this.type = exercise.type;
         this.distance = exercise.distance;
         this.start_time = exercise.start_time;
@@ -17,6 +18,7 @@ class Exercise {
         const insertData = {
             
             user_id: exercise.user_id,
+            // exercise_goal_id: exercise.exercise_goal_id,
             type: exercise.type,
             distance: exercise.distance,
             start_time: exercise.start_time,

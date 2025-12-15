@@ -7,7 +7,7 @@ const dbConn = mysql.createConnection({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'Chase2005*',
+    password: 'root',
     database: 'fitness_tracker'
 });
 
